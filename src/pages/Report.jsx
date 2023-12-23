@@ -1,8 +1,8 @@
 import React from "react";
-// import image1 from "../assets/report/care.svg";
-// import image2 from "../assets/report/forget.svg";
-// import image3 from "../assets/report/moneybag.svg";
-// import image4 from "../assets/report/transfer.svg";
+import image1 from "../assets/report/care.svg";
+import image2 from "../assets/report/forget.svg";
+import image3 from "../assets/report/moneybag.svg";
+import image4 from "../assets/report/transfer.svg";
 import { motion } from "framer-motion";
 const Report = () => {
   return (
@@ -58,26 +58,26 @@ const Report = () => {
       whileTap ={{scale:0.2}}
         className="w-12 h-[51.10px] left-[291.02px] top-[102px] absolute bg-gradient-to-b from-white to-white rounded-full"
       >
-        {/* <img src={image1} alt="" className="m-auto mt-2" /> */}
+        <img src={image1} alt="" className="m-auto mt-2" />
       </motion.div>
       <motion.div
         whileTap={{ scale: 0.2 }}
         className="w-12 h-[51.10px] left-[225.02px] top-[168px] absolute bg-gradient-to-b from-white to-white rounded-full"
       >
-        {/* <img src={image2} alt="" /> */}
+        <img src={image2} alt="" />
       </motion.div>
       <motion.div
         whileTap={{ scale: 0.2 }}
         className="w-12 h-[51.10px] left-[290.02px] top-[165px] absolute bg-gradient-to-b from-white to-white rounded-full"
       >
-        {/* <img src={image3} alt="" className="m-auto mt-3" /> */}
+        <img src={image3} alt="" className="m-auto mt-3" />
       </motion.div>
       <motion.div
         whileTap={{ scale: 0.2 }}
         className="w-12 h-[51.10px] left-[221.02px] top-[104px] absolute"
       >
         <motion.div whileTap={{scale:0.2}} className="w-12 h-[51.10px] left-0 top-0 absolute bg-gradient-to-b from-white to-white rounded-full">
-          {/* <img src={image4} alt="" className="m-auto mt-3" /> */}
+          <img src={image4} alt="" className="m-auto mt-3" />
         </motion.div>
         <div className="w-[23.23px] h-[24.72px] left-[12.39px] top-[14.83px] absolute">
           <div className="w-4 h-[11.22px] left-[3.59px] top-[11.57px] absolute"></div>

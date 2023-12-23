@@ -1,7 +1,7 @@
 // import "./styles.css";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import menu from "../assets/inventory/menu.svg";
+import menu from "../assets/menu.svg";
 import shop from "../assets/shop.png";
 import { FaHome, FaDatabase, FaBroadcastTower } from "react-icons/fa";
 import { AiOutlineTransaction, AiFillProfile,AiFillAccountBook } from "react-icons/ai";

@@ -211,7 +211,7 @@ const Inventory = () => {
           <h2>Price</h2>
         </div>
       </div>
-      <div className="text-black p-2 h-[500px] overflow-scroll flex bg-blue-500 flex-col gap-5">
+      <div className="text-black p-2 h-[500px] overflow-scroll flex flex-col gap-5" style={{background:"#D9D9D9"}}>
         {data.length > 1 ? (
           data.map((item, index) => (
             <div key={index} onClick={() => setind(index)}>
