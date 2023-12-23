@@ -1,0 +1,106 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap');
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.br-radius{
+  border-radius: 62% 38% 52% 48% / 44% 48% 52% 56%  ;
+}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.ee{
+  transform: rotate(45deg);
+}
+.combo p{
+  
+  padding: 2px 8px;
+  border-radius: 8px;
+  margin-top: 5px;
+  color: white;
+}
+.combo p:nth-child(1){
+  background-color: blue;
+}
+.combo p:nth-child(2){
+  background: #9f47e1;
+  /* background-color: blue; */
+}
+.combo p:nth-child(3){
+  background: #0a0327;
+
+}
+.combo p:nth-child(4){
+  background: #adbe24;
+}
+.combo p:nth-child(5){
+  background-color: rgb(216, 157, 86);
+}
+.combo p:nth-child(1){
+  background-color: blue;
+}
+.main{
+ background: #C887CD;
+}
+.heds{
+  background: linear-gradient(#F03117, #A461E7EB);
+}
+.shapes{
+  background: #adbe24;
+  border-radius: 20px 0 20px 0;
+  color: white;
+  padding: 5px;
+  font-size: 12px;
+  /* box-shadow: 2px 2px 2px 2px white; */
+}
+.images{
+  filter: drop-shadow(4px 4px 8px white);
+}
+.heds ul{
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  width: 50%;
+}
+
+
+.heds li{
+  padding: 5px;
+  background: #9f47e1;
+  width: 100%;
+  align-items: center;
+  color: white;
+  z-index: 5;
+}
+.bos{
+  background-color: #c1c1c1;
+  box-shadow: 20px 20px 60px #0a0327,inset -20px 20px 60px #fff;
+  outline: none;
+}
+.bd{
+  background-image: url("../src//assets//report/R1.png"); 
+  background-repeat: no-repeat;
+  /* z-index: -1; */
+}
+
+.actvity li input {
+  padding: 14px;
+  border-radius: 8px;
+  outline: none;
+}
+.inve{
+  background: linear-gradient(to right, #FF9A8B,#FF6A88,#FF99AC);
+}
+
