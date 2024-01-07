@@ -1,17 +1,18 @@
 import React from "react";
 import bageshwar from "../assets/bageshwar.png";
 import user from "../assets/first.png";
-import coin from "../assets/vector.svg";
 import coin2 from "../assets/Group.svg";
 import shop from "../assets/shop.png";
 import {FaShoppingCart,FaRegUser} from 'react-icons/fa'
 import {IoMdAnalytics} from 'react-icons/io'
 import { Combo } from "../../utils/Data";
+import { useSelector } from "react-redux";
 
 
 const Home = () => {
+  const user = useSelector((state)=>state.user.auth)
   return (
-    <header className="w-full  px-2 bg-blue-400">
+    <header className="w-full bg-blue-400">
       <main
         className="w-full p-3 h-[43vh] rounded-br-3xl rounded-bl-3xl"
         style={{ backgroundColor: "#2538E5" }}
@@ -27,7 +28,7 @@ const Home = () => {
           </div>
           <div>
             <h2 className="text-3xl text-white font-dancing">
-              Hello,Shekhar Metre
+              Hello,{user?.name || "please sign in"}
             </h2>
             <div className="flex gap items-center gap-3 text-white mt-2">
               <div>
@@ -44,7 +45,6 @@ const Home = () => {
             </div>
           </div>
         </div>
-
         <div className="mt-5 text-white">
           <h3>Today Perfromance</h3>
           <div className="grid grid-cols-3 gap-5 mt-3 ">

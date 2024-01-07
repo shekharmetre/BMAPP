@@ -5,7 +5,8 @@ import { AiFillDelete, AiOutlineArrowUp } from "react-icons/ai";
 import DailyRort from "../components/DailyRort";
 import Api from "../../utils/Api";
 import { FaCut } from "react-icons/fa";
-
+import {Activity} from '../../utils/Data'
+import { useSelector } from "react-redux";
 const Rpage = () => {
   const [dates, setDates] = useState([]);
   const [today, setDay] = useState([5]);
@@ -13,116 +14,39 @@ const Rpage = () => {
   const [selected, setSelected] = useState("sell");
   const [search, setSearch] = useState("");
   const [fetchedItem, setFetchedItem] = useState([]);
-  const [selledPrice, setSelledPrice] = useState("6");
+  const [selledPrice, setSelledPrice] = useState(0);
   const [items, setItems] = useState();
   const [searchData, setSearchData] = useState([]);
   const [Qty, setQty] = useState();
   const [about, setAbout] = useState("");
   const [number, setNumber] = useState();
   const  [activity,setActivity] = useState([])
+  const user = useSelector(state=>state.user?.auth)
 
   const SearchingItems = (e) => {
     setSearch(e.target.value);
     const filteredValue = searchData?.filter((item) =>
       item?.name?.toLowerCase().includes(search.toLowerCase())
     );
+    console.log(filteredValue)
     setFetchedItem(filteredValue);
   };
+
 
   useEffect(() => {
     const fetchingalllinveentory = async () => {
       try {
-        const response = await Api.get("/api/fetch");
+        const response = await Api.get(`/api/fetch/${user?.email}`);
         setSearchData(response?.data);
       } catch (error) {
-        console.log(error);
+        (error);
       }
     };
     fetchingalllinveentory();
   }, []);
 
-  const Detector = [
-    {
-      type: "sell",
-      userinterfacr: [
-        {
-          name: "Search Inventory",
-          placeholder: "Enter value to search",
-        },
-        {
-          name: "Sell Amount",
-          placeholder: "Enter the amount",
-        },
-        {
-          name: "Qty",
-          placeholder: "Enter the quantity",
-        },
-        {
-          name: "About",
-          placeholder: "Write something....",
-        },
-      ],
-    },
-    {
-      type: "pending",
-      userinterfacr: [
-        {
-          name: "name of Customer",
-          placeholder: "Customer Name",
-        },
-        {
-          name: "search/add",
-          placeholder: "Search/write item",
-        },
-        {
-          name: "Price",
-          placeholder: "Enter sold Amount",
-        },
-        {
-          name: "Mobile Number",
-          placeholder: "Enter Mobile Number",
-        },
-        {
-          name: "About",
-          placeholder: "Write something....",
-        },
-      ],
-    },
-    {
-      type: "repair",
-      userinterfacr: [
-        {
-          name: "repair things",
-          placeholder: "Enter repair Item",
-        },
-        {
-          name: "Mobile Name",
-          placeholder: "Enter Mobile Name",
-        },
-        {
-          name: "Price",
-          placeholder: "Enter Price",
-        },
-        {
-          name: "About",
-          placeholder: "Write something....",
-        },
-      ],
-    },
-    {
-      type: "remember",
-      userinterfacr: [
-        {
-          name: "write remember thing",
-          placeholder: "writing.....",
-        },
-        {
-          name: "About",
-          placeholder: "write something About",
-        },
-      ],
-    },
-  ];
+//  (fetchedItem)
+
 
   const SaveActivity = async () => {
     try {
@@ -133,8 +57,9 @@ const Rpage = () => {
         select: selected,
         about: about,
         number: number,
+        email:user?.email
       });
-      setActivity([...activity,response?.data])
+      setActivity([...activity,{item:items,Qty,selledPrice,selected,about,number}])
     } catch (error) {
       console.log(error);
     }
@@ -143,7 +68,6 @@ const Rpage = () => {
   const DeleteFromItems = (index) => {
     let newArray = [...items.slice(0, index), ...items.slice(index + 1)];
     setItems(newArray);
-    console.log(newArray);
   };
 
   useMemo(async ()=>{
@@ -151,7 +75,7 @@ const Rpage = () => {
     const month = dates[today]?.month
     const year = dates[today - 1]?.year
     try {
-      const response = await Api.post('/activity/get',{date,month,year})
+      const response = await Api.post('/activity/get',{date,month,year,email:user?.email})
       setActivity(response?.data)
     } catch (error) {
       console.log(error)
@@ -163,12 +87,17 @@ const Rpage = () => {
       const date = dates[today - 1]?.date;
       const month = dates[today]?.month;
       const year = dates[today - 1]?.year;
-      try {
-        const response = await Api.post('/activity/get', { date, month, year });
-        setActivity(response?.data);
-      } catch (error) {
-        console.error(error);
+      if(user?.email){
+        try {
+          const response = await Api.post('/activity/get', { date, month, year,email:user?.email });
+          setActivity(response?.data);
+        } catch (error) {
+          console.error(error);
+        }
+      }else{
+        console.log('email not regdiste')
       }
+      
     };
   
     fetchData();
@@ -219,11 +148,12 @@ const Rpage = () => {
     setDay(index + 1);
   };
 
+ 
   const findDetectorByType = (type) => {
-    return Detector.find((item) => item.type === type) || null;
+    return Activity.find((item) => item.type === type) || null;
   };
   const addActivity = useMemo(() => findDetectorByType(selected), [selected]);
-  console.log(activity)
+  // ()
   return (
     <div className=" h-screen" style={{ background: "#C887CD" }}>
       <div className={`flex gap-2 overflow-scroll p-2`}>
@@ -286,7 +216,7 @@ const Rpage = () => {
                     onChange={(e) => setSelected(e.target.value)}
                     value={selected}
                   >
-                    {Detector.map((e, i) => (
+                    {Activity.map((e, i) => (
                       <option key={i} value={e.type}>
                         {e.type}
                       </option>
@@ -295,11 +225,11 @@ const Rpage = () => {
                 </div>
 
                 <ul className="w-full relative grid grid-cols-2 mt-20 gap-4 justify-between actvity">
-                  {addActivity.userinterfacr[0] && (
+                  {addActivity.Description[0] && (
                     <>
                       {items && (
                         <div className={`${items ? "" : "hidden"} w-24 absolute items-center bg-white  flex justify-between -top-14 h-10 p-2 rounded-md`}>
-                          <p>{items.name}</p>
+                          <p>{items?.name}</p>
                           <p>
                             <AiFillDelete />
                           </p>
@@ -307,15 +237,14 @@ const Rpage = () => {
                       )}
                       <li className={`${addActivity.type === "sell" && "col-span-2"} flex flex-col gap-1`}>
                         <label htmlFor="io2">
-                          {addActivity.userinterfacr[0].name}
+                          {addActivity.Description[0].title}
                         </label>
                         <input
-                          type="text"
-                          placeholder={`${addActivity.userinterfacr[0].placeholder}`}
+                          type={`${addActivity.Description[0].type}`}
+                          placeholder={`${addActivity.Description[0].placeholder}`}
                           value={search}
                           onChange={SearchingItems}
                           onInput={()=>setHidence(true)}
-                          onMouseLeave={(()=>setHidence(false))}
                         />
                       </li>
                       <div className={` ${hidence ? "":"hidden"} absolute top-20 w-full h-[100px] bg-blue-400 overflow-scroll bg-transparent flex flex-col gap-2`}>
@@ -324,7 +253,11 @@ const Rpage = () => {
                             <div
                               className="bg-blue-400 p-2 flex justify-between backdrop-blur-md rounded-md"
                               key={e}
-                              onClick={() => setItems(i)}
+                              onClick={()=>{
+                                setItems(i)
+                                setHidence(false)
+                              }}
+                            
                             >
                               <p className=" whitespace-nowrap text-ellipsis overflow-hidden">
                                 {i.name.slice(0, 10)}
@@ -335,54 +268,54 @@ const Rpage = () => {
                       </div>
                     </>
                   )}
-                  {addActivity.userinterfacr[1] && (
+                  {addActivity.Description[1] && (
                     <li className="flex flex-col gap-1">
                       <label htmlFor="io2">
-                        {addActivity.userinterfacr[1].name}
+                        {addActivity.Description[1].title}
                       </label>
                       <input
-                        type="text"
-                        placeholder={`${addActivity.userinterfacr[1].placeholder}`}
+                        type={addActivity.Description[1].type}
+                        placeholder={`${addActivity.Description[1].placeholder}`}
                         value={selledPrice}
                         onChange={(e) => setSelledPrice(e.target.value)}
                       />
                     </li>
                   )}
-                  {addActivity.userinterfacr[2] && (
+                  {addActivity.Description[2] && (
                     <li className="flex flex-col gap-1">
                       <label htmlFor="io2">
-                        {addActivity.userinterfacr[2].name}
+                        {addActivity.Description[2].title}
                       </label>
                       <input
-                        type="text"
-                        placeholder={`${addActivity.userinterfacr[2].placeholder}`}
+                        type={addActivity.Description[2].type}
+                        placeholder={`${addActivity.Description[2].placeholder}`}
                         value={Qty}
                         onChange={(e) => setQty(e.target.value)}
                       />
                     </li>
 
                   )}
-                  {addActivity.userinterfacr[3] && (
+                  {addActivity.Description[3] && (
                     <li className="flex flex-col gap-1">
                       <label htmlFor="io2">
-                        {addActivity.userinterfacr[3].name}
+                        {addActivity.Description[3].title}
                       </label>
                       <input
-                        type="text"
-                        placeholder={`${addActivity.userinterfacr[3].placeholder}`}
+                        type={addActivity.Description[3].type}
+                        placeholder={`${addActivity.Description[3].placeholder}`}
                         value={about}
                         onChange={(e) => setAbout(e.target.value)}
                       />
                     </li>
                   )}
-                  {addActivity.userinterfacr[4] && (
+                  {addActivity.Description[4] && (
                     <li className="flex flex-col gap-1">
                       <label htmlFor="io2">
-                        {addActivity.userinterfacr[4].name}
+                        {addActivity.Description[4].title}
                       </label>
                       <input
-                        type="text"
-                        placeholder={`${addActivity.userinterfacr[4].placeholder}`}
+                        type={addActivity.Description[4].type}
+                        placeholder={`${addActivity.Description[4].placeholder}`}
                       />
                     </li>
                   )}

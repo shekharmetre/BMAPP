@@ -1,4 +1,5 @@
 // import  from "../src/assets/com.png";
+import image1 from '../src/assets/home/deision.webp'
 // import image1 from '../src/assets/inventory/varni120.png'
 // import samsung from '../src/assets/inventory/twneowback.png'
 // import vipsmallcharger from '../src/assets/inventory/vipsmallcharger.png'
@@ -646,3 +647,121 @@ export const inventoryModel = [{
 
 }
 ];
+
+export const Activity = [
+  {
+    type : "sell",
+    Description : [
+      {
+        title : "search From Inventory :",
+        placeholder : "enter name",
+        type : "text"
+        // and set above item
+      },{
+        title  : "Sell Price :",
+        placeholder : "Enter Amount",
+        type : "number",
+      },
+      {
+        title : "Qty :",
+        placeholder : "enter Quantity",
+        type : "number",
+      },
+      {
+        title : "Detail of Item :",
+        placeholder : "writes.......",
+        type : "text"
+      }
+    ]
+  },
+  {
+    type : "pending",
+    Description : [
+      {
+        title : "name of Customer :",
+        placeholder : "enter name",
+        type : "text",
+      },
+      {
+        title : "Pending Item...:",
+        placeholder : "item Full description",
+        type : "text",
+      },
+      {
+        title : "Sell Amount",
+        placeholder : "enter amount",
+        type : "number"
+      },
+      {
+        title : "Quantity : ",
+        placeholder : "enter Quantity",
+        type : "number",
+      },
+      {
+        title : "mobile Number :",
+        placeholder : "mobile Number",
+        type : "text"
+      },
+      {
+        title : "something.....",
+        placeholder : "write.....",
+        type : "text"
+      }
+    ]
+  },
+  {
+    type : "repair",
+    Description : [
+     
+      {
+        title : "Model Name :",
+        placeholder : "enter model name..",
+        type : "text",
+      },
+      {
+        title : "customer Name :",
+        placeholder : "enter name...",
+        type : "text"
+      },
+      {
+        title : "Customer mob No:.:",
+        placeholder : "enter mobile name..",
+        type : "text",
+      },
+      {
+        title : "Repair Description : ",
+        placeholder : "Description....",
+        type : "text"
+      },
+      {
+        title : "Repair Amount :",
+        placeholder : "enter price....",
+        type : "number",
+      },
+      {
+        title : "Detail of Item :",
+        placeholder : "writes.......",
+        type : "text"
+      }
+    ]
+  }
+
+]
+
+export const imageSlider = [
+  {
+    image : image1,
+  },
+  {
+    image : image1,
+  },
+  {
+    image : image1,
+  },
+  {
+    image : image1,
+  },
+  {
+    image : image1,
+  }
+]

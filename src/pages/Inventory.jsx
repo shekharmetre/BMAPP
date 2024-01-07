@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { FaPrint, FaPlusCircle, FaCut } from "react-icons/fa";
-import Inventories from "../components/Inventories";
-import axios from "axios";
+const Inventories = React.lazy(() => import("../components/Inventories"))
 import Api from "../../utils/Api";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const Inventory = () => {
   const [check, setcheck] = useState(false);
   const [ind, setind] = useState(null);
   const [data, setData] = useState([]);
-
-  // fetche from models
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [about, setAbout] = useState("");
@@ -17,22 +16,41 @@ const Inventory = () => {
   const [stock, setStock] = useState(0);
   const [image, setImage] = useState();
   const [brand, setBrand] = useState("");
+  const user = useSelector(state => state?.user?.auth)
+  const navigate = useNavigate();
+  const email = user?.email
+  if (!email) {
+    navigate('/login')
+  }
 
   useEffect(() => {
     const fetchingalllinveentory = async () => {
-      try {
-        const response = await Api.get("/api/fetch");
-        setData(response?.data);
-      } catch (error) {
-        console.log(error);
-      }
+        try {
+          const response = await Api.get(`/api/fetch/${user && user?.email}`);
+          const response_data = response?.data
+          const converted_toImage = response_data.map(e => {
+            if (e?.image?.data) {
+              const base64Data = btoa(String.fromCharCode.apply(null, new Uint8Array(e.image.data)));
+              e.image = base64Data;
+            }
+            return e;
+          });
+          setData(converted_toImage)
+        } catch (error) {
+          console.log(error);
+        }
     };
     fetchingalllinveentory();
-  }, []);
+  },[]);
 
-  const SaveActivity = async (e) => {
+  console.log(data)
+
+
+
+
+
+  const SaveInventory = async (e) => {
     e.preventDefault();
-
     const formdata = new FormData();
     formdata.append("file", image); // Assuming 'image' is your file
     formdata.append("name", name); // Add other form data fields
@@ -40,6 +58,7 @@ const Inventory = () => {
     formdata.append("mrp", MRP);
     formdata.append("brand", brand);
     formdata.append("attribute", description);
+    formdata.append('email', email)
     try {
       const response = await Api.post("/api/addinventory", formdata);
       setData([...data, response?.data]);
@@ -190,7 +209,7 @@ const Inventory = () => {
                     <form method="dialog">
                       <button
                         className="btn btn-primary px-7"
-                        onClick={SaveActivity}
+                        onClick={SaveInventory}
                       >
                         Save
                       </button>
@@ -204,22 +223,17 @@ const Inventory = () => {
           <div></div>
         )}
       </div>
-      <div className="flex justify-between text-2xl font-semibold">
-        <h4>Product</h4>
-        <div className="flex gap-5 ">
-          <h2>Stock</h2>
-          <h2>Price</h2>
-        </div>
-      </div>
-      <div className="text-black p-2 h-[500px] overflow-scroll flex flex-col gap-5" style={{background:"#D9D9D9"}}>
-        {data.length > 1 ? (
-          data.map((item, index) => (
+      <div className="text-black p-2 h-[500px] overflow-scroll flex flex-col gap-5" style={{ background: "#D9D9D9" }}>
+        {data?.length >= 1 ?(
+          data?.map((item, index) => (
             <div key={index} onClick={() => setind(index)}>
-              <Inventories editable={check} item={item} view={ind} indexes={index} />
+              <Suspense fallback={<div>Loading....</div>}>
+                <Inventories editable={check} item={item} view={ind} indexes={index} />
+              </Suspense>
             </div>
           ))
-        ) : (
-          <p>Loading...</p>
+        ):(
+          <div>{user?.email} not added any inventory</div>
         )}
       </div>
 
